@@ -2,6 +2,8 @@ let firstNum = 0;
 let operation = "";
 let secondNum = 0;
 
+const buttons = document.querySelectorAll("button");
+
 function add(a, b){
     return a + b;
 }
