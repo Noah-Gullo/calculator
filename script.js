@@ -39,3 +39,30 @@ function operate(operator, num1, num2){
 
     return result;
 }
+
+function setButtonColor(button, color){
+    button.style.backgroundColor = color;
+}
+
+function setButtonTextSize(button, size){
+    button.style.fontSize = size;
+}
+
+for(let i = 0; i < buttons.length; i++){
+    buttons[i].addEventListener("mouseenter", () => {
+        setButtonTextSize(buttons[i], "30px");
+        setButtonColor(buttons[i], "#adbae6ff")
+    });
+    buttons[i].addEventListener("mouseleave", () => {
+        setButtonTextSize(buttons[i], "24px");
+        setButtonColor(buttons[i], "#96e5ffff")
+    });
+    buttons[i].addEventListener("mousedown", () => {
+        setButtonTextSize(buttons[i], "36px");
+        setButtonColor(buttons[i], "#7c8ab8ff")
+    });
+    buttons[i].addEventListener("mouseup", () => {
+        setButtonTextSize(buttons[i], "24px");
+        setButtonColor(buttons[i], "#96e5ffff")
+    });
+}
