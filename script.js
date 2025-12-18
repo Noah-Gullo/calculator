@@ -65,7 +65,7 @@ function operate(operator, num1, num2){
     }
 
     if((parseFloat(result) * 10) % 10 !== 0){
-       result = parseFloat(result).toFixed(6);
+       result = parseFloat(result).toFixed(5);
     }
 
     updateDisplay(result);
@@ -101,18 +101,23 @@ function inputOperator(input){
         operation = input;
         record += operation;
     }else{
-        record = operate(operation, firstNum, secondNum);
+        if(secondNum === ""){
+            operation = input;
+            record = firstNum + operation;
+        }else{
+            record = operate(operation, firstNum, secondNum);
 
-        if(record === undefined){
-            record = 0;
-            firstNum = 0;
-            return;
+            if(record === undefined){
+                record = 0;
+                firstNum = 0;
+                return;
+            }
+
+            firstNum = record;
+            operation = input;
+            secondNum = "";
+            record = firstNum + operation;
         }
-
-        firstNum = record;
-        operation = input;
-        secondNum = "";
-        record = firstNum + operation;
     }
 
     updateDisplay(record);
