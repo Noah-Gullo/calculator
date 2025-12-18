@@ -2,6 +2,7 @@ let firstNum = "";
 let operation = "";
 let secondNum = "";
 
+let previousResult = "-1";
 let record = "";
 
 const buttons = document.querySelectorAll("button");
@@ -35,7 +36,7 @@ function divide(a, b){
     return a / b;
 }
 
-function operate(operator, num1, num2){
+function operate(operator, num1, num2, fromEquals){
     if(num1 === "" || operator == "" || num2 == ""){
         clearDisplay();
         return;
@@ -69,6 +70,8 @@ function operate(operator, num1, num2){
     }
 
     updateDisplay(result);
+    previousResult = result;
+
     record = result;
     firstNum = record;
     operation = "";
@@ -78,7 +81,10 @@ function operate(operator, num1, num2){
 }
 
 function inputNumber(input){
-    if(record === 0){
+    if(record === previousResult){
+        record = input;
+        firstNum = input;
+    }else if(record === 0){
         record = input;
         firstNum = input;
     }else if(operation === ""){
@@ -105,7 +111,7 @@ function inputOperator(input){
             operation = input;
             record = firstNum + operation;
         }else{
-            record = operate(operation, firstNum, secondNum);
+            record = operate(operation, firstNum, secondNum, false);
 
             if(record === undefined){
                 record = 0;
@@ -145,7 +151,7 @@ function setButtonTextSize(button, size){
 }
 
 clearButton.addEventListener("click", () => clearDisplay());
-equalsButton.addEventListener("click", () => operate(operation, firstNum, secondNum));
+equalsButton.addEventListener("click", () => operate(operation, firstNum, secondNum, true));
 
 for(let i = 0; i < numButtons.length; i++){
     numButtons[i].addEventListener("click", () => inputNumber(numButtons[i].textContent));
