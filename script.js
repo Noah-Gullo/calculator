@@ -144,7 +144,7 @@ for(let i = 0; i < operatorButtons.length; i++){
 for(let i = 0; i < buttons.length; i++){
     buttons[i].addEventListener("mouseenter", () => {
         setButtonTextSize(buttons[i], "30px");
-        setButtonColor(buttons[i], "#adbae6ff")
+        setButtonColor(buttons[i], "#adbae4ff")
     });
     buttons[i].addEventListener("mouseleave", () => {
         setButtonTextSize(buttons[i], "24px");
