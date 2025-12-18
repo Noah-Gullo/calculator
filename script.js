@@ -26,7 +26,7 @@ function multiply(a, b){
 function divide(a, b){
     if(b == 0){
         record = "0";
-        firstNum = "0";
+        firstNum = "";
         operation = "";
         secondNum = "";
         updateDisplay("Don't divide by 0.");
@@ -58,6 +58,7 @@ function operate(operator, num1, num2){
         case "/":
             result = divide(num1, num2);
             if(result === "Divide by Zero Error"){
+                record = 0;
                 return; 
             }
             break;
