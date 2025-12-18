@@ -24,19 +24,27 @@ function multiply(a, b){
 }
 
 function divide(a, b){
+    if(b == 0){
+        record = "0";
+        firstNum = "0";
+        operation = "";
+        secondNum = "";
+        updateDisplay("Don't divide by 0.");
+        return "Divide by Zero Error";
+    }
     return a / b;
 }
 
 function operate(operator, num1, num2){
-    if(num1 === "" || num2 == ""){
+    if(num1 === "" || operator == "" || num2 == ""){
         clearDisplay();
         return;
     }
 
-
     let result = 0;
     num1 = parseFloat(num1);
     num2 = parseFloat(num2);
+
     switch (operator){
         case "+":
             result = add(num1, num2);
@@ -49,11 +57,14 @@ function operate(operator, num1, num2){
             break;
         case "/":
             result = divide(num1, num2);
+            if(result === "Divide by Zero Error"){
+                return; 
+            }
             break;
     }
 
-    if(result % 10 !== 0){
-        result.toFixed(2);
+    if((parseFloat(result) * 10) % 10 !== 0){
+       result = parseFloat(result).toFixed(6);
     }
 
     updateDisplay(result);
@@ -62,15 +73,13 @@ function operate(operator, num1, num2){
     operation = "";
     secondNum = "";
 
-
-    console.log("Operator() finished.");
-    printStatus();
     return result;
 }
 
 function inputNumber(input){
-    if(record === "0"){
+    if(record === 0){
         record = input;
+        firstNum = input;
     }else if(operation === ""){
         firstNum += input;
         record += input;
@@ -79,18 +88,26 @@ function inputNumber(input){
         record += input;
     }
     
-    
     updateDisplay(record);
-    console.log("Number " + input +" inputted.");
-    printStatus();
 }
 
 function inputOperator(input){
+    if(firstNum == ""){
+        return;
+    }
+
     if(operation === ""){
         operation = input;
         record += operation;
     }else{
         record = operate(operation, firstNum, secondNum);
+
+        if(record === undefined){
+            record = 0;
+            firstNum = 0;
+            return;
+        }
+
         firstNum = record;
         operation = input;
         secondNum = "";
@@ -98,13 +115,6 @@ function inputOperator(input){
     }
 
     updateDisplay(record);
-
-    console.log("Operator " + input + " inputted.");
-    printStatus();
-}
-
-function printStatus(){
-    console.log(`Record: ${record}, First Num: ${firstNum}, Operator: ${operation}, Second Num: ${secondNum}.`);
 }
 
 function updateDisplay(input){
@@ -112,14 +122,12 @@ function updateDisplay(input){
 }
 
 function clearDisplay(){
-    record = "0";
-    firstNum = "";
+    record = 0;
+    firstNum = "0";
     operation = "";
-    secondNum = ""
+    secondNum = "";
 
     display.textContent = record;
-    console.log("clearDisplay() called. Record now " + record);
-    printStatus()
 }
 
 function setButtonColor(button, color){
@@ -144,7 +152,7 @@ for(let i = 0; i < operatorButtons.length; i++){
 for(let i = 0; i < buttons.length; i++){
     buttons[i].addEventListener("mouseenter", () => {
         setButtonTextSize(buttons[i], "30px");
-        setButtonColor(buttons[i], "#adbae4ff")
+        setButtonColor(buttons[i], "#adbae6ff")
     });
     buttons[i].addEventListener("mouseleave", () => {
         setButtonTextSize(buttons[i], "24px");
