@@ -69,8 +69,8 @@ function operate(operator, num1, num2){
     }
 
     updateDisplay(result);
-    record = "";
-    firstNum = "";
+    record = result;
+    firstNum = record;
     operation = "";
     secondNum = "";
 
