@@ -6,6 +6,7 @@ let userInput = "";
 
 const buttons = document.querySelectorAll("button");
 const numButtons = document.querySelectorAll(".number");
+const operatorButtons = document.querySelectorAll(".operator");
 const clearButton = document.querySelector(".clearButton");
 const display = document.querySelector(".display");
 
@@ -26,7 +27,10 @@ function divide(a, b){
 }
 
 function operate(operator, num1, num2){
+    userInput = "";
     let result = 0;
+    num1 = parseFloat(num1);
+    num2 = parseFloat(num2);
     switch (operator){
         case "+":
             result = add(num1, num2);
@@ -45,18 +49,47 @@ function operate(operator, num1, num2){
     return result;
 }
 
-function setDisplay(input){
+function inputNumber(input){
     if(userInput === "0"){
         userInput = input;
+    }else if(operation === ""){
+        firstNum += input;
     }else{
-        userInput += input;
+        secondNum += input;
+    }
+    
+    userInput += input;
+    updateDisplay();
+    console.log(input +" INPUTTED. USER INPUT NOW " + userInput);
+}
+
+function inputOperator(input){
+    if(operation === ""){
+        operation = input;
+        userInput += operation;
+    }else{
+        userInput = operate(operation, firstNum, secondNum);
+        firstNum = userInput;
+        operation = input;
+        secondNum = "";
     }
 
+    
+    userInput = firstNum + operation;
+    updateDisplay();
+    console.log(input + " inputted. user input now " + userInput);
+}
+
+function updateDisplay(){
     display.textContent = userInput;
 }
 
 function clearDisplay(){
     userInput = "0";
+    firstNum = "";
+    operation = "";
+    secondNum = ""
+
     display.textContent = userInput;
 }
 
@@ -71,7 +104,11 @@ function setButtonTextSize(button, size){
 clearButton.addEventListener("click", () => clearDisplay());
 
 for(let i = 0; i < numButtons.length; i++){
-    numButtons[i].addEventListener("click", () => setDisplay(numButtons[i].textContent));
+    numButtons[i].addEventListener("click", () => inputNumber(numButtons[i].textContent));
+}
+
+for(let i = 0; i < operatorButtons.length; i++){
+    operatorButtons[i].addEventListener("click", () => inputOperator(operatorButtons[i].textContent));
 }
 
 for(let i = 0; i < buttons.length; i++){
