@@ -1,12 +1,13 @@
-let firstNum = 0;
+let firstNum = "";
 let operation = "";
-let secondNum = 0;
+let secondNum = "";
 
-let userInput = "";
+let record = "";
 
 const buttons = document.querySelectorAll("button");
 const numButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
+const equalsButton = document.querySelector(".equalsButton");
 const clearButton = document.querySelector(".clearButton");
 const display = document.querySelector(".display");
 
@@ -27,7 +28,12 @@ function divide(a, b){
 }
 
 function operate(operator, num1, num2){
-    userInput = "";
+    if(num1 === "" || num2 == ""){
+        clearDisplay();
+        return;
+    }
+
+
     let result = 0;
     num1 = parseFloat(num1);
     num2 = parseFloat(num2);
@@ -46,51 +52,74 @@ function operate(operator, num1, num2){
             break;
     }
 
+    if(result % 10 !== 0){
+        result.toFixed(2);
+    }
+
+    updateDisplay(result);
+    record = result;
+    firstNum = record;
+    operation = "";
+    secondNum = "";
+
+
+    console.log("Operator() finished.");
+    printStatus();
     return result;
 }
 
 function inputNumber(input){
-    if(userInput === "0"){
-        userInput = input;
+    if(record === "0"){
+        record = input;
     }else if(operation === ""){
         firstNum += input;
+        record += input;
     }else{
         secondNum += input;
+        record += input;
     }
     
-    userInput += input;
-    updateDisplay();
-    console.log(input +" INPUTTED. USER INPUT NOW " + userInput);
+    
+    updateDisplay(record);
+    console.log("Number " + input +" inputted.");
+    printStatus();
 }
 
 function inputOperator(input){
     if(operation === ""){
         operation = input;
-        userInput += operation;
+        record += operation;
     }else{
-        userInput = operate(operation, firstNum, secondNum);
-        firstNum = userInput;
+        record = operate(operation, firstNum, secondNum);
+        firstNum = record;
         operation = input;
         secondNum = "";
+        record = firstNum + operation;
     }
 
-    
-    userInput = firstNum + operation;
-    updateDisplay();
-    console.log(input + " inputted. user input now " + userInput);
+    updateDisplay(record);
+
+    console.log("Operator " + input + " inputted.");
+    printStatus();
 }
 
-function updateDisplay(){
-    display.textContent = userInput;
+function printStatus(){
+    console.log(`Record: ${record}, First Num: ${firstNum}, Operator: ${operation}, Second Num: ${secondNum}.`);
+}
+
+function updateDisplay(input){
+    display.textContent = input;
 }
 
 function clearDisplay(){
-    userInput = "0";
+    record = "0";
     firstNum = "";
     operation = "";
     secondNum = ""
 
-    display.textContent = userInput;
+    display.textContent = record;
+    console.log("clearDisplay() called. Record now " + record);
+    printStatus()
 }
 
 function setButtonColor(button, color){
@@ -102,6 +131,7 @@ function setButtonTextSize(button, size){
 }
 
 clearButton.addEventListener("click", () => clearDisplay());
+equalsButton.addEventListener("click", () => operate(operation, firstNum, secondNum));
 
 for(let i = 0; i < numButtons.length; i++){
     numButtons[i].addEventListener("click", () => inputNumber(numButtons[i].textContent));
